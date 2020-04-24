@@ -1,0 +1,131 @@
+/*FibonacciPrime Problem*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace FibonacciNumber
+{
+    class FibonacciPrimeCheck
+    {
+        //Returns true if valid Integers
+        //else return false
+        static bool CheckValidInteger(string input)
+        {
+            int check = 0;
+            string[] splittedInputNumbers = input.Split(",");
+
+            foreach (var inp in splittedInputNumbers)
+            {
+                if (!int.TryParse(inp, out int value))
+                    break;
+                else
+                {
+                    if (value < 0)
+                        break;
+                    else
+                        check++;
+                }
+            }
+            if (check == input.Split(',').Count())
+                return true;
+            else
+                return false;
+        }
+
+        //Returns true if Prime
+        //else return false
+        static bool IsPrime(int number)
+        {
+            if (number <= 1) return false;
+
+            for (int i = 2; i <= number / 2; i++)
+            {
+                if ((number % i) == 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        //Check for Perefctsquare
+        static bool IsPerfectSquare(int number)
+        {
+            int sqr = (int)Math.Sqrt(number);
+            return (sqr * sqr == number);
+        }
+
+        // Returns true if number is a  
+        // Fibonacci Number, else false 
+        static bool IsFibonacci(int number)
+        {
+            // number is Fibonacci if one of 
+            // 5*number*number + 4 or 5*number*number - 4 or  
+            // both are a perfect square 
+            if (IsPerfectSquare(5 * number * number + 4) || IsPerfectSquare(5 * number * number - 4))
+            {
+                if (IsPrime(number))
+                    return true;                
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        static void Main(string[] args)
+        {
+            char ch;
+            try
+            {
+                do
+                {
+                    //Enter your inputs
+                    Console.WriteLine("Enter your numbers[comma separated]");
+                    string inputNumbers = Console.ReadLine();
+
+                    //Check for valid integers from input
+                    bool result = CheckValidInteger(inputNumbers);
+
+                    if (result)
+                    {
+                        string[] splittedInputNumbers = inputNumbers.Split(",");
+
+                        if (splittedInputNumbers.Count() < 2)
+                            Console.WriteLine("Please input two or more numbers");
+                        else if (splittedInputNumbers.Count() > 31999)
+                            Console.WriteLine("Please input less numbers");
+                        else if (string.IsNullOrWhiteSpace(inputNumbers))
+                            Console.WriteLine("Please input valid integers");
+                        else
+                        {
+
+                            //Check for Fibonacci
+                            for (int i = 0; i < splittedInputNumbers.Length; i++)
+                            {
+                                Console.Write(IsFibonacci(Convert.ToInt32(splittedInputNumbers[i])) ? "'y'" : "'n'");
+                                if (i < splittedInputNumbers.Length - 1)
+                                    Console.Write(",");
+                            }
+                        }
+
+                    }
+                    else
+                        Console.WriteLine("Please input valid positive integers");
+
+                    Console.WriteLine("\n"+"Do you want to continue?[y/n]");
+                    ch = Convert.ToChar(Console.ReadLine());
+                }
+                while (ch == 'y' || ch == 'Y');
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("You encountered an error:: {0}. Please run your application once again", ex.Message);
+                Console.ReadKey();
+            }
+        }
+    }
+}
+
