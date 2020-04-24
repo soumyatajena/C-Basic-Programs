@@ -1,0 +1,186 @@
+/*BinaryTree Traversal*/
+
+using System;
+using System.Linq;
+
+namespace BinaryTreeTraversal
+{
+    class Node
+    {
+        public int key;
+        public Node left, right;
+    };
+    class BinaryTree
+    {
+        static bool CheckValidInteger(string input)
+        {
+            int check = 0;
+            string[] splittedInputNumbers = input.Split(",");
+
+            foreach (var inp in splittedInputNumbers)
+            {
+                if (!int.TryParse(inp, out int value))
+                    break;
+                else
+                    check++;
+            }
+
+            if (check == input.Split(',').Count())
+                return true;
+            else
+                return false;
+        }
+
+        //To create a new Node  
+        static Node NewNode(int data)
+        {
+            Node temp = new Node();
+
+            temp.key = data;
+
+            temp.left = null;
+            temp.right = null;
+
+            return temp;
+        }
+
+        //To Insert Node
+        static Node InsertNode(Node root, int key)
+        {
+            Node newnode = NewNode(key);
+
+            Node x = root;
+
+            Node y = null;
+
+            while (x != null)
+            {
+                y = x;
+                if (key < x.key)
+                    x = x.left;
+                else
+                    x = x.right;
+            }
+
+            if (y == null)
+                y = newnode;
+
+            else if (key < y.key)
+                y.left = newnode;
+
+            else
+                y.right = newnode;
+
+            return y;
+        }
+
+        static void InOrder(Node root)
+        {
+            if (root == null)
+                return;
+            else
+            {
+                InOrder(root.left);
+                Console.Write(root.key + " ");
+                InOrder(root.right);
+            }
+        }
+
+        static void PreOrder(Node root)
+        {
+            if (root == null)
+                return;
+            else
+            {
+                Console.Write(root.key + " ");
+                PreOrder(root.left);
+                PreOrder(root.right);
+            }
+        }
+
+        static void PostOrder(Node root)
+        {
+            if (root == null)
+                return;
+            else
+            {
+                PostOrder(root.left);
+                PostOrder(root.right);
+                Console.Write(root.key + " ");
+            }
+        }
+        static void Main(string[] args)
+        {
+            char ch;
+            try
+            {
+                do
+                {
+                    Console.WriteLine("Enter your elements[comma separated]");
+                    string inputElements = Console.ReadLine();
+                    bool result = CheckValidInteger(inputElements);
+
+                    if (result)
+                    {
+
+                        string[] splittedElements = inputElements.Split(",");
+
+                        int[] integerArray = Array.ConvertAll(splittedElements, ele => int.Parse(ele));
+
+                        Node root = null;
+
+                        root = InsertNode(root, integerArray[0]);
+
+                        foreach (var inp in integerArray.Skip(1))
+                        {
+                            InsertNode(root, inp);
+                        }
+
+                        Console.WriteLine("\n"+"Please select:" + "\n" + "1. PreOrder Traversal" +
+                                            "\t" + "2. InOrder Traversal" + "\t" + "3. PostOrder Traversal");
+
+                        string traversal = Console.ReadLine().ToLower();
+
+                        // Print inorder traversal
+                        if (traversal.Equals("inorder"))
+                        {
+                            Console.Write("\n" + "Your InOrder Traversal is:" + "\n");
+                            InOrder(root);
+                        }
+
+                        // Print preorder traversal
+                        else if (traversal.Equals("preorder"))
+                        {
+                            Console.Write("\n" + "Your PreOrder Traversal is:" + "\n");
+                            PreOrder(root);
+                        }
+
+                        // Print postorder traversal
+                        else if (traversal.Equals("postorder"))
+                        {
+                            Console.Write("\n" + "Your PostOrder Traversal is:" + "\n");
+                            PostOrder(root);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n"+"Please type [inorder/preorder/postorder] only"+"\n");
+                        }
+                    }
+                    else
+                        Console.WriteLine("\n"+"Please enter integers only"+"\n");
+
+                    Console.Write("\n" + "Do you want to continue?[y/n]: ");
+                    ch = Convert.ToChar(Console.ReadLine());
+                }
+                while (ch == 'y' || ch == 'Y');
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("You encountered an error:: {0}. Please run your application once again", ex.Message);
+                Console.ReadKey();
+            }
+
+        }
+    }
+}
