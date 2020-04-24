@@ -1,4 +1,6 @@
 # C-Basic-Programs
+1. Binary Tree Traversal
+
 Implementation of the functionalities of BinaryTree class to store the elements in a binary tree and return the data by traversing them using inorder, postorder and preorder. 
 
 Bsic Info:
