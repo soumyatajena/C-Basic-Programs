@@ -1,0 +1,52 @@
+/*Reverse word in a sentence*/
+
+using System;
+using System.Text.RegularExpressions;
+
+namespace ReverseWordInSentenceProblem
+{
+    class ReverseWord
+    {
+        static void Main(string[] args)
+        {
+            char ch;
+            try
+            {
+                do
+                {
+                    Console.WriteLine("Enter your sentence");
+                    string sentence = Console.ReadLine();
+                    string strrev = "";
+
+                    foreach (var word in sentence.Split(' '))
+                    {
+                        string temp = "";
+                        if (Regex.IsMatch(word, @"^[0-9]*(?:\.[0-9]*)?$"))
+                        {
+                            strrev = strrev + word + " ";
+                        }
+                        else
+                        {
+                            foreach (var w in word)
+                            {
+                                temp = w + temp;
+                            }
+                            strrev = strrev + temp + " ";
+                        }
+                    }
+                    Console.WriteLine("\n" + "Your Output : " + strrev);
+
+                    Console.WriteLine("\n" + "Do you want to continue?[y/n]");
+                    ch = Convert.ToChar(Console.ReadLine());
+                }
+                while (ch == 'y' || ch == 'Y');
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("You encountered an error:: {0}. Please run your application once again", ex.Message);
+                Console.ReadKey();
+            }
+           
+        }
+    }
+}
